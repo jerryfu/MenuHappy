@@ -3,6 +3,7 @@ package tw.idv.fly.menuhappy;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,6 +94,7 @@ public class MenuHappyActivity extends AppCompatActivity implements LoaderCallba
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
     }
 
     private void populateAutoComplete() {
@@ -258,6 +261,7 @@ public class MenuHappyActivity extends AppCompatActivity implements LoaderCallba
         List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            Log.i("Email=>", cursor.getString(ProfileQuery.ADDRESS));
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
@@ -333,6 +337,9 @@ public class MenuHappyActivity extends AppCompatActivity implements LoaderCallba
             showProgress(false);
 
             if (success) {
+
+                Intent intent = new Intent(MenuHappyActivity.this, MenuActivity.class);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
