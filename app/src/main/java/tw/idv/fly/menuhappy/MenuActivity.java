@@ -30,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private RequestQueue mQueue;
     ListView lv_menu_item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +48,6 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         lv_menu_item = (ListView) this.findViewById(R.id.listView);
-
         mQueue = Volley.newRequestQueue(getApplicationContext());
         requestJson();
     }
@@ -65,7 +65,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void requestJson() {
-        String url = "http://menuquick.fly.idv.tw/api/prod";
+        String url = getResources().getString(R.string.api_url) + "api/prod";
         StringRequest reqeust = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -74,9 +74,8 @@ public class MenuActivity extends AppCompatActivity {
                         // mTextView.append(response);
                         Gson gson = new Gson();
                         Prod[] p = gson.fromJson(response, Prod[].class);
-                        Log.i("JSON Object Lenght=>", Integer.toString(p.length));
-
-                        BAdapter adapter = new BAdapter(MenuActivity.this, R.layout.menu_item, p);
+                        //Log.i("JSON Object Lenght=>", Integer.toString(p.length));
+                        AdapterProd adapter = new AdapterProd(MenuActivity.this, R.layout.menu_item, p);
                         lv_menu_item.setAdapter(adapter);
                     }
                 }, null);
@@ -93,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
         }
     };
 
-    private class BAdapter extends ArrayAdapter {
+    private class AdapterProd extends ArrayAdapter {
 
         private Context act_context;
         private LayoutInflater inflater;
@@ -102,7 +101,7 @@ public class MenuActivity extends AppCompatActivity {
         private String[] imageUrls;
         private Prod[] dataDefs;
 
-        public BAdapter(Context context, int resource, Prod[] objects) {
+        public AdapterProd(Context context, int resource, Prod[] objects) {
             super(context, resource, objects);
 
             this.act_context = context;
